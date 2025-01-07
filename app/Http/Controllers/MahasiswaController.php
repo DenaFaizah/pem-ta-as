@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jurusan;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 
@@ -13,27 +14,32 @@ class MahasiswaController extends Controller
     return view('mahasiswa.index', compact('mahasiswas'));
 }
 
-    public function create()
-    {
-        
-        return view('mahasiswa.create'); 
-    }
+public function create()
+{
+    $jurusans = Jurusan::all(); // Fetch all jurusans
+    return view('mahasiswa.create', compact('jurusans'));
+}
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nim' => 'required', 
-            'nama' => 'required',
-            'email' => 'required|email',
-            'no_hp' => 'required'
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'nim' => 'required',
+        'nama' => 'required',
+        'email' => 'required|email',
+        'jurusan_id' => 'required|exists:jurusans,id', // Validasi jurusan_id
+        'no_hp' => 'required',
+    ]);
 
-        $mahasiswa = new Mahasiswa(); 
-        $mahasiswa->fill($request->all()); 
-        $mahasiswa->save();
+    $mahasiswa = new Mahasiswa();
+    $mahasiswa->nim = $request->nim;
+    $mahasiswa->nama = $request->nama;
+    $mahasiswa->email = $request->email;
+    $mahasiswa->jurusan_id = $request->jurusan_id; // Simpan jurusan_id
+    $mahasiswa->no_hp = $request->no_hp;
+    $mahasiswa->save();
 
-        return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil ditambah'); 
-    }
+    return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil ditambahkan');
+}
 
     public function show(string $id)
     {
@@ -41,27 +47,31 @@ class MahasiswaController extends Controller
         return view('mahasiswa.show', compact('mahasiswa')); 
     }
 
-    public function edit(string $id)
-    {
-        $mahasiswa = Mahasiswa::findOrFail($id); 
-        return view('mahasiswa.edit', compact('mahasiswa')); 
-    }
+    public function edit($id)
+{
+    $mahasiswa = Mahasiswa::findOrFail($id); // Ambil data mahasiswa berdasarkan ID
+    $jurusans = Jurusan::all(); // Ambil semua jurusan
 
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'nim' => 'required',
-            'nama' => 'required',
-            'email' => 'required|email',
-            'no_hp' => 'required'
-        ]);
+    return view('mahasiswa.edit', compact('mahasiswa', 'jurusans')); // Kirim data mahasiswa dan jurusan ke view
+}
 
-        $mahasiswa = Mahasiswa::findOrFail($id); 
-        $mahasiswa->fill($request->all()); 
-        $mahasiswa->save();
+public function update(Request $request, $id)
+{
+    // Validasi input
+    $validatedData = $request->validate([
+        'nim' => 'required|string|max:20',
+        'nama' => 'required|string|max:255',
+        'email' => 'required|email|unique:mahasiswas,email,' . $id,
+        'jurusan_id' => 'required|exists:jurusans,id',
+        'no_hp' => 'required|string|max:15',
+    ]);
 
-        return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil diperbarui'); 
-    }
+    // Temukan mahasiswa berdasarkan ID dan update
+    $mahasiswa = Mahasiswa::findOrFail($id);
+    $mahasiswa->update($validatedData);
+
+    return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil diperbarui.');
+}
 
     public function destroy(string $id)
     {

@@ -17,21 +17,28 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Create Data Jurusan') }}</div>
+                        <div class="card-header">{{ __('Show Data Tugas Akhir') }}</div>
 
                         <div class="card-body">
-                            <form action="{{ route('jurusan.store') }}" method="POST">
+                            <form action="{{ route('tuakir.store') }}" method="POST">
                                 @csrf
+                                <!-- Input ko_ta -->
                                 <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" class="form-control" id="nama" name="nama" required>
+                                    <label for="ko_ta">Kode Ta</label>
+                                    <input type="text" class="form-control" id="ko_ta" name="ko_ta" placeholder="Masukkan Kode" required>
                                 </div>
-                                
-                                <br>
-                                <!-- Tombol Submit -->
-                                        <button type="submit" class="btn btn-primary" onclick="return confirm('Data Berhasil ditambhkan')">
-                                            {{ __('Save') }}
-                                        </button>
+
+                                <!-- Input judul_ta -->
+                                <div class="form-group">
+                                    <label for="judul_ta">Judul</label>
+                                    <input type="text" class="form-control" id="judul_ta" name="judul_ta" placeholder="Masukkan Judul" required>
+                                </div>
+
+                                <br><br>
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Save') }}
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -39,4 +46,5 @@
             </div>
         </main>
     </div>
-</div>@endsection
+</div>
+@endsection

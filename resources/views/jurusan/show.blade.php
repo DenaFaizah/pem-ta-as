@@ -17,26 +17,21 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Create Data Jurusan') }}</div>
-
+                        <div class="card-header">{{ __('Show Data dosen') }}</div>
+                        
                         <div class="card-body">
-                            <form action="{{ route('jurusan.store') }}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" class="form-control" id="nama" name="nama" required>
-                                </div>
-                                
-                                <br>
-                                <!-- Tombol Submit -->
-                                        <button type="submit" class="btn btn-primary" onclick="return confirm('Data Berhasil ditambhkan')">
-                                            {{ __('Save') }}
-                                        </button>
-                            </form>
+                            <table class="table">
+                                <tr>
+                                    <th>Nama</th>
+                                    <td>{{ $jurusan->nama }}</td>
+                                </tr>
+                            </table>
+                            <a href="{{ route('jurusan.index') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-</div>@endsection
+</div>
+@endsection

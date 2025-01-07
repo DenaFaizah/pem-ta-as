@@ -17,26 +17,37 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Create Data Jurusan') }}</div>
+                        <div class="card-header">{{ __('Show Data Mahasiswa') }}</div>
 
                         <div class="card-body">
-                            <form action="{{ route('jurusan.store') }}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" class="form-control" id="nama" name="nama" required>
-                                </div>
-                                
-                                <br>
-                                <!-- Tombol Submit -->
-                                        <button type="submit" class="btn btn-primary" onclick="return confirm('Data Berhasil ditambhkan')">
-                                            {{ __('Save') }}
-                                        </button>
-                            </form>
+                            <table class="table">
+                                <tr>
+                                    <th>Nama</th>
+                                    <td>{{ $mahasiswa->nim }}</td>
+                                </tr>
+                                <tr>
+                                    <th>NIM</th>
+                                    <td>{{ $mahasiswa->nama }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Kelas</th>
+                                    <td>{{ $mahasiswa->email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>No Hp</th>
+                                    <td>{{ $mahasiswa->no_hp }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Jurusan</th>
+                                    <td>{{ $mahasiswa->jurusan->nama ?? 'Tidak ada jurusan' }}</td>
+                                </tr>
+                            </table>
+                            <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-</div>@endsection
+</div>
+@endsection

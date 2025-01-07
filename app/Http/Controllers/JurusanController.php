@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jurusan; 
+use App\Models\Jurusan; // Corrected: Use 'Jurusan' with a capital 'J'
 use Illuminate\Http\Request;
 
 class JurusanController extends Controller
 {
-        /**
-         * Display a listing of the resource.
-         */
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $jurusans = Jurusan::paginate(10);
+        $jurusans = Jurusan::paginate(10); // Corrected: Use 'Jurusan' with a capital 'J'
         return view('jurusan.index', compact('jurusans'));
     }
 
-        /**
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('jurusan.create'); // Menghapus $id karena tidak diperlukan
+        return view('jurusan.create');
     }
 
     /**
@@ -29,24 +29,28 @@ class JurusanController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'nama' => 'required'  
+            'nama' => 'required'  // Pastikan field 'nama' wajib diisi
         ]);
 
+        // Membuat instance baru dari model Jurusan dan menyimpan data
         $jurusan = new Jurusan();
         $jurusan->nama = $request->nama;
-        $jurusan->save(); 
+        $jurusan->save(); // Menyimpan data ke database
 
         // Redirect ke halaman daftar jurusan setelah berhasil disimpan
-        return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil ditambahkan');
+        return redirect()->route('jurusan.index');
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        // Implementasi untuk menampilkan jurusan tertentu jika diperlukan
+        $jurusan = Jurusan::findOrFail($id); // Find the Dosen by ID
+        return view('jurusan.show', compact('jurusan'));
     }
 
     /**
@@ -54,7 +58,7 @@ class JurusanController extends Controller
      */
     public function edit(string $id)
     {
-        $jurusan = Jurusan::findOrFail($id); // Menggunakan findOrFail untuk menangani kesalahan
+        $jurusan = Jurusan::find($id); // Corrected: Use 'Jurusan' with a capital 'J'
         return view('jurusan.edit', compact('jurusan'));
     }
 
@@ -63,24 +67,20 @@ class JurusanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'nama' => 'required'  
-        ]);
-
-        $jurusan = Jurusan::findOrFail($id); // Menggunakan findOrFail untuk menangani kesalahan
-        $jurusan->nama = $request->nama;
-        $jurusan->save();
-
+        $jurusans = Jurusan::find($id); // Corrected: Use 'Jurusan' with a capital 'J'
+        $jurusans->nama = $request->nama;
+        $jurusans->save();
         return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil diperbarui');
     }
 
-/**
- * Remove the specified resource from storage.
- */
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
-        $jurusan = Jurusan::findOrFail($id); // Pastikan menggunakan huruf kapital
-        $jurusan->delete();
+        $jurusans = jurusan::findOrFail($id); // Corrected: Use 'Jurusan' with a capital 'J'
+        $jurusans->delete(); // Hapus data jurusans dari database
+        // Redirect kembali ke halaman daftar jurusans dengan pesan sukses
         return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil dihapus');
     }
 }

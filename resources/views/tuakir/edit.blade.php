@@ -17,26 +17,37 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Create Data Jurusan') }}</div>
+                        <div class="card-header">{{ __('Edit Data Tugas Akhir') }}</div>
 
                         <div class="card-body">
-                            <form action="{{ route('jurusan.store') }}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <input type="text" class="form-control" id="nama" name="nama" required>
-                                </div>
-                                
-                                <br>
-                                <!-- Tombol Submit -->
-                                        <button type="submit" class="btn btn-primary" onclick="return confirm('Data Berhasil ditambhkan')">
-                                            {{ __('Save') }}
-                                        </button>
-                            </form>
-                        </div>
+                        <!-- Form Edit Tugas Akhir -->
+                        <form action="{{ route('tukir.update', $tukir->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+
+                            <!-- Input Kode -->
+                            <div class="form-group mb-3">
+                                <label for="kode_ta">Kode Ta</label>
+                                <input type="text" class="form-control" id="kode_ta" name="kode_ta" value="{{ $tukir->kode_ta }}" placeholder="Masukkan Kode" required>
+                            </div>
+
+                            <!-- Input Judul -->
+                            <div class="form-group mb-3">
+                                <label for="judul_ta">Judul</label>
+                                <input type="text" class="form-control" id="judul_ta" name="judul_ta" value="{{ $tukir->judul_ta }}" placeholder="Masukkan Judul" required>
+                            </div>
+                            
+                            <br>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah Anda yakin ingin mengedit data ini?')">
+                                {{ __('Update') }}
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-</div>@endsection
+</div>
+@endsection

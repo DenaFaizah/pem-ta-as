@@ -17,41 +17,37 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Data dosen') }}</div>
-
+                        <div class="card-header">{{ __('Data Tugas Akhir') }}</div>
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
-                            <a href="{{ route('dosen.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
+                            <a href="{{ route('tuakir.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
 
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>NIDN</th>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>Opsi</th>
+                                        <th>Kode TA</th>
+                                        <th>Judul TA</th>
+                                        <th>Option</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
-                                        $no = ($dosens->currentPage() - 1) * $dosens->perPage() + 1;
+                                        $no = ($tuakirs->currentPage() - 1) * $tuakirs->perPage() + 1;
                                     @endphp
-                                    @if($dosens->count())
-                                        @foreach($dosens as $dosen)
+                                    @foreach($tuakirs as $tuakir)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $dosen->nidn }}</td>
-                                            <td>{{ $dosen->nama }}</td>
-                                            <td>{{ $dosen->email }}</td>
+                                            <td>{{ $tuakir->ko_ta }}</td>
+                                            <td>{{ $tuakir->judul_ta }}</td>
                                             <td>
-                                            <a href="{{ route('dosen.show', $dosen->id) }}" class="btn btn-info btn-sm" title="Detail">
+                                                <a href="{{ route('tuakir.show', $tuakir->id) }}" class="btn btn-info btn-sm">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('dosen.edit', $dosen->id) }}" class="btn btn-warning btn-sm">
+                                                <a href="{{ route('tuakir.edit', $tuakir->id) }}" class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="{{ route('dosen.destroy', $dosen->id) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('tuakir.destroy', $tuakir->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
@@ -60,15 +56,11 @@
                                                 </form>
                                             </td>
                                         </tr>
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="6" class="text-center">Data tidak tersedia.</td>
-                                        </tr>
-                                    @endif
+                                    @endforeach
                                 </tbody>
                             </table>
-                            {{ $dosens->links() }}
+                            <!-- Pagination Links -->
+                            {{ $tuakirs->links() }}
                         </div>
                     </div>
                 </div>

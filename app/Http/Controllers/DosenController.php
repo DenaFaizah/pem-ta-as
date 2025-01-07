@@ -8,6 +8,11 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class DosenController extends Controller
 {
+    public function __construct()
+    {
+        // Hanya admin yang bisa mengakses method ini
+        $this->middleware('role:admin')->only('adminDashboard');
+    }
     /**
      * Display a listing of the resource.
      */
