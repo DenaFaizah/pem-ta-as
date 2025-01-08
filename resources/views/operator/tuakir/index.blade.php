@@ -6,7 +6,16 @@
         <aside class="col-md-3 col-lg-2 bg-light sidebar py-4 vh-100 d-md-block d-none">
             <div class="list-group">
                 <a href="{{ route('home') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-home"></i> Home</a>
-                <a href="{{ route('tuakir.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-file-alt"></i> Data Tugas Akhir</a>
+                <a href="{{ route('operator.mahasiswa.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-user-graduate"></i> Data Mahasiswa</a>
+                <a href="{{ route('operator.tuakir.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-file-alt"></i> Data Tugas Akhir</a>
+                
+                <!-- Form Logout -->
+                <form action="{{ route('logout') }}" method="POST" class="list-group-item list-group-item-action bg-light">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-decoration-none p-0">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
             </div>
         </aside>
         <!-- main content -->
@@ -17,7 +26,7 @@
                         <div class="card-header">{{ __('Data Tugas Akhir') }}</div>
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
-                            <a href="{{ route('tuakir.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
+                            <a href="{{ route('operator.tuakir.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
 
                             <table class="table table-striped table-bordered">
                                 <thead>
@@ -38,13 +47,13 @@
                                             <td>{{ $tuakir->ko_ta }}</td>
                                             <td>{{ $tuakir->judul_ta }}</td>
                                             <td>
-                                                <a href="{{ route('tuakir.show', $tuakir->id) }}" class="btn btn-info btn-sm">
+                                                <a href="{{ route('operator.tuakir.show', $tuakir->id) }}" class="btn btn-info btn-sm">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('tuakir.edit', $tuakir->id) }}" class="btn btn-warning btn-sm">
+                                                <a href="{{ route('operator.tuakir.edit', $tuakir->id) }}" class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="{{ route('tuakir.destroy', $tuakir->id) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('operator.tuakir.destroy', $tuakir->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">

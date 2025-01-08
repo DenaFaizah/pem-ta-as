@@ -23,29 +23,32 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Create Data Tugas Akhir') }}</div>
+                        <div class="card-header">{{ __('Show Data Mahasiswa') }}</div>
 
                         <div class="card-body">
-                            <form action="{{ route('operator.tuakir.store') }}" method="POST">
-                                @csrf
-                                <!-- Input ko_ta -->
-                                <div class="form-group">
-                                    <label for="ko_ta">Kode Ta</label>
-                                    <input type="text" class="form-control" id="ko_ta" name="ko_ta" placeholder="Masukkan Kode" required>
-                                </div>
-
-                                <!-- Input judul_ta -->
-                                <div class="form-group">
-                                    <label for="judul_ta">Judul</label>
-                                    <input type="text" class="form-control" id="judul_ta" name="judul_ta" placeholder="Masukkan Judul" required>
-                                </div>
-
-                                <br>
-                                <!-- Submit Button -->
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Save') }}
-                                </button>
-                            </form>
+                            <table class="table">
+                                <tr>
+                                    <th>Nama</th>
+                                    <td>{{ $mahasiswa->nim }}</td>
+                                </tr>
+                                <tr>
+                                    <th>NIM</th>
+                                    <td>{{ $mahasiswa->nama }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Kelas</th>
+                                    <td>{{ $mahasiswa->email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>No Hp</th>
+                                    <td>{{ $mahasiswa->no_hp }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Jurusan</th>
+                                    <td>{{ $mahasiswa->jurusan->nama ?? 'Tidak ada jurusan' }}</td>
+                                </tr>
+                            </table>
+                            <a href="{{ route('operator.mahasiswa.index') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Show Data Tugas Akhir') }}</div>
+                        <div class="card-header">{{ __('Create Data Tugas Akhir') }}</div>
 
                         <div class="card-body">
                             <form action="{{ route('tuakir.store') }}" method="POST">
@@ -34,7 +34,7 @@
                                     <input type="text" class="form-control" id="judul_ta" name="judul_ta" placeholder="Masukkan Judul" required>
                                 </div>
 
-                                <br><br>
+                                <br>
                                 <!-- Submit Button -->
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Save') }}

@@ -13,7 +13,7 @@ class TuakirController extends Controller
     public function index()
     {
         $tuakirs = Tuakir::paginate(10); // Fetch paginated data
-        return view('tuakir.index', compact('tuakirs'));
+        return view('operator.tuakir.index', compact('tuakirs'));
     }
 
     /**
@@ -21,7 +21,7 @@ class TuakirController extends Controller
      */
     public function create()
     {
-        return view('tuakir.create');
+        return view('operator.tuakir.create');
     }
 
     /**
@@ -41,7 +41,7 @@ class TuakirController extends Controller
         $tuakir->save(); // Menyimpan data ke database
 
         // Redirect ke halaman daftar tuki$tuakir setelah berhasil disimpan
-        return redirect()->route('tuakir.index');
+        return redirect()->route('operator.tuakir.index');
     }
 
     /**
@@ -49,7 +49,8 @@ class TuakirController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $tuakir = Tuakir::findOrFail($id); // Find the tuakir by ID
+        return view('operator.tuakir.show', compact('tuakir'));
     }
 
     /**
@@ -58,7 +59,7 @@ class TuakirController extends Controller
     public function edit(string $id)
     {
         $tuakir = Tuakir::find($id); 
-        return view('tuakir.edit', compact('tuakirs'));
+        return view('operator.tuakir.edit', compact('tuakir'));
     }
 
     /**
@@ -70,7 +71,7 @@ class TuakirController extends Controller
         $tuakir->ko_ta = $request->ko_ta;
         $tuakir->judul_ta = $request->judul_ta;
         $tuakir->save();
-        return redirect()->route('tuakir.index')->with('success', 'Tugas Akhi berhasil diperbarui');
+        return redirect()->route('operator.tuakir.index')->with('success', 'Tugas Akhi berhasil diperbarui');
     }
 
     /**
@@ -81,6 +82,6 @@ class TuakirController extends Controller
         $tuakir = Tuakir::findOrFail($id);
         $tuakir->delete();
 
-        return redirect()->route('tuakir.index')->with('success', 'Data berhasil dihapus'); 
+        return redirect()->route('operator.tuakir.index')->with('success', 'Data berhasil dihapus'); 
     }
 }

@@ -8,18 +8,13 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class DosenController extends Controller
 {
-    public function __construct()
-    {
-        // Hanya admin yang bisa mengakses method ini
-        $this->middleware('role:admin')->only('adminDashboard');
-    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $dosens = Dosen::paginate(10);
-        return view('dosen.index', compact('dosens'));
+        return view('admin.dosen.index', compact('dosens'));
     }
 
     /**
@@ -27,7 +22,7 @@ class DosenController extends Controller
      */
     public function create()
     {
-        return view('dosen.create'); // Return the view for creating a new Dosen
+        return view('admin.dosen.create'); // Return the view for creating a new Dosen
     }
 
     /**
@@ -45,7 +40,7 @@ class DosenController extends Controller
         $dosen ->fill($request->all());
         $dosen->save();
 
-        return redirect()->route('dosen.index')->with('success', 'Dosen berhasil ditambahkan'); // Redirect with success message
+        return redirect()->route('admin.dosen.index')->with('success', 'Dosen berhasil ditambahkan'); // Redirect with success message
     }
 
     /**
@@ -54,7 +49,7 @@ class DosenController extends Controller
     public function show(string $id)
     {
         $dosen = Dosen::findOrFail($id); // Find the Dosen by ID
-        return view('dosen.show', compact('dosen')); // Return the view to show the Dosen details
+        return view('admin.dosen.show', compact('dosen')); // Return the view to show the Dosen details
     }
 
     /**
@@ -63,7 +58,7 @@ class DosenController extends Controller
     public function edit(string $id)
     {
         $dosen = Dosen::findOrFail($id); // Find the Dosen by ID
-        return view('dosen.edit', compact('dosen')); // Return the view for editing the Dosen
+        return view('admin.dosen.edit', compact('dosen')); // Return the view for editing the Dosen
     }
 
     /**
@@ -81,6 +76,6 @@ class DosenController extends Controller
         $dosen->fill($request->all()); // Update the name
         $dosen->save();
 
-        return redirect()->route('dosen.index')->with('success', 'Data dosen berhasil diperbarui'); 
+        return redirect()->route('admin.dosen.index')->with('success', 'Data dosen berhasil diperbarui'); 
     }
 }

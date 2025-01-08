@@ -13,7 +13,7 @@ class JurusanController extends Controller
     public function index()
     {
         $jurusans = Jurusan::paginate(10); // Corrected: Use 'Jurusan' with a capital 'J'
-        return view('jurusan.index', compact('jurusans'));
+        return view('admin.jurusan.index', compact('jurusans'));
     }
 
     /**
@@ -21,7 +21,7 @@ class JurusanController extends Controller
      */
     public function create()
     {
-        return view('jurusan.create');
+        return view('admin.jurusan.create');
     }
 
     /**
@@ -40,7 +40,7 @@ class JurusanController extends Controller
         $jurusan->save(); // Menyimpan data ke database
 
         // Redirect ke halaman daftar jurusan setelah berhasil disimpan
-        return redirect()->route('jurusan.index');
+        return redirect()->route('admin.jurusan.index');
     }
 
 
@@ -50,7 +50,7 @@ class JurusanController extends Controller
     public function show(string $id)
     {
         $jurusan = Jurusan::findOrFail($id); // Find the Dosen by ID
-        return view('jurusan.show', compact('jurusan'));
+        return view('admin.jurusan.show', compact('jurusan'));
     }
 
     /**
@@ -59,7 +59,7 @@ class JurusanController extends Controller
     public function edit(string $id)
     {
         $jurusan = Jurusan::find($id); // Corrected: Use 'Jurusan' with a capital 'J'
-        return view('jurusan.edit', compact('jurusan'));
+        return view('admin.jurusan.edit', compact('jurusan'));
     }
 
     /**
@@ -70,7 +70,7 @@ class JurusanController extends Controller
         $jurusans = Jurusan::find($id); // Corrected: Use 'Jurusan' with a capital 'J'
         $jurusans->nama = $request->nama;
         $jurusans->save();
-        return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil diperbarui');
+        return redirect()->route('admin.jurusan.index')->with('success', 'Jurusan berhasil diperbarui');
     }
 
     /**
@@ -81,6 +81,6 @@ class JurusanController extends Controller
         $jurusans = jurusan::findOrFail($id); // Corrected: Use 'Jurusan' with a capital 'J'
         $jurusans->delete(); // Hapus data jurusans dari database
         // Redirect kembali ke halaman daftar jurusans dengan pesan sukses
-        return redirect()->route('jurusan.index')->with('success', 'Jurusan berhasil dihapus');
+        return redirect()->route('admin.jurusan.index')->with('success', 'Jurusan berhasil dihapus');
     }
 }

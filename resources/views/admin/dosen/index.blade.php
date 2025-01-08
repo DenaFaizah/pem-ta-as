@@ -21,7 +21,7 @@
 
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
-                            <a href="{{ route('dosen.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
+                            <a href="{{ route('aadmin.dosen.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
 
                             <table class="table table-striped table-bordered">
                                 <thead>
@@ -45,13 +45,13 @@
                                             <td>{{ $dosen->nama }}</td>
                                             <td>{{ $dosen->email }}</td>
                                             <td>
-                                            <a href="{{ route('dosen.show', $dosen->id) }}" class="btn btn-info btn-sm" title="Detail">
+                                            <a href="{{ route('admin.dosen.show', $dosen->id) }}" class="btn btn-info btn-sm" title="Detail">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('dosen.edit', $dosen->id) }}" class="btn btn-warning btn-sm">
+                                                <a href="{{ route('admin.dosen.edit', $dosen->id) }}" class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="{{ route('dosen.destroy', $dosen->id) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('admin.dosen.destroy', $dosen->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">

@@ -6,7 +6,16 @@
         <aside class="col-md-3 col-lg-2 bg-light sidebar py-4 vh-100 d-md-block d-none">
             <div class="list-group">
                 <a href="{{ route('home') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-home"></i> Home</a>
-                <a href="{{ route('tuakir.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-file-alt"></i> Data Tugas Akhir</a>
+                <a href="{{ route('operator.mahasiswa.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-user-graduate"></i> Data Mahasiswa</a>
+                <a href="{{ route('operator.tuakir.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-file-alt"></i> Data Tugas Akhir</a>
+                
+                <!-- Form Logout -->
+                <form action="{{ route('logout') }}" method="POST" class="list-group-item list-group-item-action bg-light">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-decoration-none p-0">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
             </div>
         </aside>
         <!-- main content -->
@@ -20,14 +29,14 @@
                             <table class="table">
                                 <tr>
                                     <th>Kode</th>
-                                    <td>{{ $tukir->kode_ta }}</td>
+                                    <td>{{ $tuakir->ko_ta }}</td>
                                 </tr>
                                 <tr>
                                     <th>Judul</th>
-                                    <td>{{ $tukir->judul_ta }}</td>
+                                    <td>{{ $tuakir->judul_ta }}</td>
                                 </tr>
                             </table>
-                            <a href="{{ route('tukir.index') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('operator.tuakir.index') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,10 @@
 @extends('layouts.app')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 @section('content')
+
 <div class="container-fluid">
     <div class="row">
+        <!-- Sidebar -->
         <aside class="col-md-3 col-lg-2 bg-light sidebar py-4 vh-100 d-md-block d-none">
             <div class="list-group">
                 <a href="{{ route('home') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-home"></i> Home</a>
@@ -18,34 +20,25 @@
                 </form>
             </div>
         </aside>
-        <!-- main content -->
+        <!-- Main content -->
         <main class="col-md-9 col-lg-10 px-4">
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Create Data Tugas Akhir') }}</div>
-
+                        <div class="card-header">{{ __('Dashboard') }}</div>
+                        
                         <div class="card-body">
-                            <form action="{{ route('operator.tuakir.store') }}" method="POST">
-                                @csrf
-                                <!-- Input ko_ta -->
-                                <div class="form-group">
-                                    <label for="ko_ta">Kode Ta</label>
-                                    <input type="text" class="form-control" id="ko_ta" name="ko_ta" placeholder="Masukkan Kode" required>
+                            @if (session('status'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ session('status') }}
                                 </div>
+                            @endif
+                            <div class="container">
+                                <h1>Dashboard Operator</h1>
+                                <p>Selamat datang, {{ Auth::user()->name }}! Anda login sebagai operator.</p>
+                            </div>
 
-                                <!-- Input judul_ta -->
-                                <div class="form-group">
-                                    <label for="judul_ta">Judul</label>
-                                    <input type="text" class="form-control" id="judul_ta" name="judul_ta" placeholder="Masukkan Judul" required>
-                                </div>
-
-                                <br>
-                                <!-- Submit Button -->
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Save') }}
-                                </button>
-                            </form>
+                            {{ __('You are logged in!') }}
                         </div>
                     </div>
                 </div>

@@ -6,10 +6,16 @@
         <aside class="col-md-3 col-lg-2 bg-light sidebar py-4 vh-100 d-md-block d-none">
             <div class="list-group">
                 <a href="{{ route('home') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-home"></i> Home</a>
-                <a href="{{ route('dosen.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-user-tie"></i> Data Dosen</a>
-                <a href="{{ route('mahasiswa.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-user-graduate"></i> Data Mahasiswa</a>
-                <a href="{{ route('jurusan.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-building"></i> Data Jurusan</a>
-                <a href="{{ route('tuakir.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-file-alt"></i> Data Tugas Akhir</a>
+                <a href="{{ route('operator.mahasiswa.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-user-graduate"></i> Data Mahasiswa</a>
+                <a href="{{ route('operator.tuakir.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-file-alt"></i> Data Tugas Akhir</a>
+                
+                <!-- Form Logout -->
+                <form action="{{ route('logout') }}" method="POST" class="list-group-item list-group-item-action bg-light">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-decoration-none p-0">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
             </div>
         </aside>
         <!-- main content -->
@@ -17,41 +23,45 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Data Dosen') }}</div>
+                        <div class="card-header">{{ __('Data Mahasiswa') }}</div>
 
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
-                            <a href="{{ route('dosen.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
+                            <a href="{{ route('operator.mahasiswa.create') }}" class="btn btn-primary mb-3">Tambah Data</a>
 
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>NIDN</th>
+                                        <th>NIM</th>
                                         <th>Nama</th>
                                         <th>Email</th>
+                                        <th>Jurusan</th>
+                                        <th>No HP</th>
                                         <th>Opsi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
-                                        $no = ($dosens->currentPage() - 1) * $dosens->perPage() + 1;
+                                        $no = ($mahasiswas->currentPage() - 1) * $mahasiswas->perPage() + 1;
                                     @endphp
-                                    @if($dosens->count())
-                                        @foreach($dosens as $dosen)
+                                    @if($mahasiswas->count())
+                                        @foreach($mahasiswas as $mahasiswa)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $dosen->nidn }}</td>
-                                            <td>{{ $dosen->nama }}</td>
-                                            <td>{{ $dosen->email }}</td>
+                                            <td>{{ $mahasiswa->nim }}</td>
+                                            <td>{{ $mahasiswa->nama }}</td>
+                                            <td>{{ $mahasiswa->email }}</td>
+                                            <td>{{ $mahasiswa->jurusan->nama ?? 'Tidak ada jurusan' }}</td>
+                                            <td>{{ $mahasiswa->no_hp }}</td>
                                             <td>
-                                            <a href="{{ route('dosen.show', $dosen->id) }}" class="btn btn-info btn-sm" title="Detail">
+                                                <a href="{{ route('operator.mahasiswa.show', $mahasiswa->id) }}" class="btn btn-info btn-sm" title="Detail">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('dosen.edit', $dosen->id) }}" class="btn btn-warning btn-sm">
+                                                <a href="{{ route('operator.mahasiswa.edit', $mahasiswa->id) }}" class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="{{ route('dosen.destroy', $dosen->id) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('operator.mahasiswa.destroy', $mahasiswa->id) }}" method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
@@ -63,12 +73,12 @@
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan="6" class="text-center">Data tidak tersedia.</td>
+                                            <td colspan="7" class="text-center">Data tidak tersedia.</td>
                                         </tr>
                                     @endif
                                 </tbody>
                             </table>
-                            {{ $dosens->links() }}
+                            {{ $mahasiswas->links() }}
                         </div>
                     </div>
                 </div>

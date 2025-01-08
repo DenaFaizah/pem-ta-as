@@ -23,28 +23,41 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Create Data Tugas Akhir') }}</div>
-
+                        <div class="card-header">{{ __('Create Data Mahasiswa') }}</div>
+                        <!-- Form Tambah Data Mahasiswa -->
                         <div class="card-body">
-                            <form action="{{ route('operator.tuakir.store') }}" method="POST">
+                            <form action="{{ route('operator.mahasiswa.store') }}" method="POST">
                                 @csrf
-                                <!-- Input ko_ta -->
                                 <div class="form-group">
-                                    <label for="ko_ta">Kode Ta</label>
-                                    <input type="text" class="form-control" id="ko_ta" name="ko_ta" placeholder="Masukkan Kode" required>
+                                    <label for="nim">NIM</label>
+                                    <input type="text" name="nim" class="form-control" required>
                                 </div>
 
-                                <!-- Input judul_ta -->
                                 <div class="form-group">
-                                    <label for="judul_ta">Judul</label>
-                                    <input type="text" class="form-control" id="judul_ta" name="judul_ta" placeholder="Masukkan Judul" required>
+                                    <label for="nama">Nama</label>
+                                    <input type="text" name="nama" class="form-control" required>
                                 </div>
 
-                                <br>
-                                <!-- Submit Button -->
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Save') }}
-                                </button>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" class="form-control" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="no_hp">No HP</label>
+                                    <input type="text" name="no_hp" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jurusan_id">Jurusan</label>
+                                    <select name="jurusan_id" class="form-control" required>
+                                        <option value="">Pilih Jurusan</option>
+                                        @foreach($jurusans as $jurusan)
+                                            <option value="{{ $jurusan->id }}">{{ $jurusan->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div><br>
+                                
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </form>
                         </div>
                     </div>
