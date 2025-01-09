@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tuakir;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TuakirController extends Controller
 {
@@ -12,8 +13,20 @@ class TuakirController extends Controller
      */
     public function index()
     {
-        $tuakirs = Tuakir::paginate(10); // Fetch paginated data
-        return view('operator.tuakir.index', compact('tuakirs'));
+        $user = Auth::user();
+
+        if (in_array($user->role, ['admin', 'operator'])) {
+            $tuakirs = Tuakir::paginate(10);
+
+            // Tampilkan view sesuai role
+            $viewPath = $user->role === 'operator'
+                ? 'operator.tuakir.index'
+                : 'admin.tuakir.index';
+
+            return view($viewPath, compact('tuakirs'));
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
     /**
@@ -21,7 +34,17 @@ class TuakirController extends Controller
      */
     public function create()
     {
-        return view('operator.tuakir.create');
+        $user = Auth::user();
+
+        if (in_array($user->role, ['admin', 'operator'])) {
+            $viewPath = $user->role === 'operator'
+                ? 'operator.tuakir.create'
+                : 'admin.tuakir.create';
+
+            return view($viewPath);
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
     /**
@@ -31,17 +54,19 @@ class TuakirController extends Controller
     {
         $request->validate([
             'ko_ta' => 'required',
-            'judul_ta' => 'required' 
+            'judul_ta' => 'required'
         ]);
 
-        // Membuat instance baru dari model Jurusan dan menyimpan data
-        $tuakir = new Tuakir();
-        $tuakir->ko_ta = $request->ko_ta;
-        $tuakir->judul_ta = $request->judul_ta;
-        $tuakir->save(); // Menyimpan data ke database
+        if (in_array(Auth::user()->role, ['admin', 'operator'])) {
+            $tuakir = new Tuakir();
+            $tuakir->ko_ta = $request->ko_ta;
+            $tuakir->judul_ta = $request->judul_ta;
+            $tuakir->save();
 
-        // Redirect ke halaman daftar tuki$tuakir setelah berhasil disimpan
-        return redirect()->route('operator.tuakir.index');
+            return redirect()->route('operator.tuakir.index')->with('success', 'Data berhasil ditambahkan');
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
     /**
@@ -49,8 +74,19 @@ class TuakirController extends Controller
      */
     public function show(string $id)
     {
-        $tuakir = Tuakir::findOrFail($id); // Find the tuakir by ID
-        return view('operator.tuakir.show', compact('tuakir'));
+        $user = Auth::user();
+
+        if (in_array($user->role, ['admin', 'operator'])) {
+            $tuakir = Tuakir::findOrFail($id);
+
+            $viewPath = $user->role === 'operator'
+                ? 'operator.tuakir.show'
+                : 'admin.tuakir.show';
+
+            return view($viewPath, compact('tuakir'));
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
     /**
@@ -58,8 +94,19 @@ class TuakirController extends Controller
      */
     public function edit(string $id)
     {
-        $tuakir = Tuakir::find($id); 
-        return view('operator.tuakir.edit', compact('tuakir'));
+        $user = Auth::user();
+
+        if (in_array($user->role, ['admin', 'operator'])) {
+            $tuakir = Tuakir::findOrFail($id);
+
+            $viewPath = $user->role === 'operator'
+                ? 'operator.tuakir.edit'
+                : 'admin.tuakir.edit';
+
+            return view($viewPath, compact('tuakir'));
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
     /**
@@ -67,11 +114,21 @@ class TuakirController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $tuakir = Tuakir::find($id); // Corrected: Use 'Jurusan' with a capital 'J'
-        $tuakir->ko_ta = $request->ko_ta;
-        $tuakir->judul_ta = $request->judul_ta;
-        $tuakir->save();
-        return redirect()->route('operator.tuakir.index')->with('success', 'Tugas Akhi berhasil diperbarui');
+        $request->validate([
+            'ko_ta' => 'required',
+            'judul_ta' => 'required'
+        ]);
+
+        if (in_array(Auth::user()->role, ['admin', 'operator'])) {
+            $tuakir = Tuakir::findOrFail($id);
+            $tuakir->ko_ta = $request->ko_ta;
+            $tuakir->judul_ta = $request->judul_ta;
+            $tuakir->save();
+
+            return redirect()->route('operator.tuakir.index')->with('success', 'Data berhasil diperbarui');
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
     /**
@@ -79,9 +136,13 @@ class TuakirController extends Controller
      */
     public function destroy(string $id)
     {
-        $tuakir = Tuakir::findOrFail($id);
-        $tuakir->delete();
+        if (in_array(Auth::user()->role, ['admin', 'operator'])) {
+            $tuakir = Tuakir::findOrFail($id);
+            $tuakir->delete();
 
-        return redirect()->route('operator.tuakir.index')->with('success', 'Data berhasil dihapus'); 
+            return redirect()->route('operator.tuakir.index')->with('success', 'Data berhasil dihapus');
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 }

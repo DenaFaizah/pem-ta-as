@@ -10,6 +10,14 @@
                 <a href="{{ route('admin.mahasiswa.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-user-graduate"></i> Data Mahasiswa</a>
                 <a href="{{ route('admin.jurusan.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-building"></i> Data Jurusan</a>
                 <a href="{{ route('admin.tuakir.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-file-alt"></i> Data Tugas Akhir</a>
+
+                <!-- Form Logout -->
+                <form action="{{ route('logout') }}" method="POST" class="list-group-item list-group-item-action bg-light">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-decoration-none p-0">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
             </div>
         </aside>
         <!-- main content -->
@@ -34,7 +42,7 @@
                                     <label for="nama">Nama</label>
                                     <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama" required>
                                 </div>
-                                
+
                                 <!-- Input email -->
                                 <div class="form-group">
                                     <label for="email">Email</label>

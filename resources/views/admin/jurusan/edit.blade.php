@@ -10,6 +10,13 @@
                 <a href="{{ route('admin.mahasiswa.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-user-graduate"></i> Data Mahasiswa</a>
                 <a href="{{ route('admin.jurusan.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-building"></i> Data Jurusan</a>
                 <a href="{{ route('admin.tuakir.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-file-alt"></i> Data Tugas Akhir</a>
+
+                <form action="{{ route('logout') }}" method="POST" class="list-group-item list-group-item-action bg-light">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-decoration-none p-0">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
             </div>
         </aside>
         <!-- main content -->
@@ -23,14 +30,14 @@
                             <!-- Form Edit jurusan -->
                             <form action="{{ route('admin.jurusan.update', $jurusan->id) }}" method="POST">
                                 @csrf
-                                @method('PUT') 
+                                @method('PUT')
 
                                 <!-- Input Nama -->
                                 <div class="form-group mb-3">
                                     <label for="nama">Nama</label>
                                     <input type="text" class="form-control" id="nama" name="nama" value="{{ $jurusan->nama }}" required>
                                 </div>
-                                
+
                                 <!-- Tombol Submit -->
                                 <button type="submit" class="btn btn-primary" onclick="return confirm('Data Berhasil diedit')">
                                     {{ __('Update') }}

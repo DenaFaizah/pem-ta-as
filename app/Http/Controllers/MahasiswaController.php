@@ -1,87 +1,174 @@
+<?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Jurusan;
-use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Mahasiswa;
 
 class MahasiswaController extends Controller
 {
-    private $viewPrefix;
-
-    public function __construct()
-    {
-        $this->middleware('role:admin,operator');
-        $this->viewPrefix = auth()->user()->role === 'admin' ? 'admin' : 'operator';
-    }
-
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $mahasiswas = Mahasiswa::paginate(10);
-        return view("{$this->viewPrefix}.mahasiswa.index", compact('mahasiswas'));
+        $user = Auth::user();
+
+        if (in_array($user->role, ['admin', 'operator'])) {
+            // Fetch mahasiswa data with pagination
+            $mahasiswas = Mahasiswa::paginate(10);
+
+            // Use a different view based on the user's role
+            $viewPath = $user->role === 'operator' 
+                ? 'operator.mahasiswa.index' 
+                : 'admin.mahasiswa.index';
+
+            return view($viewPath, compact('mahasiswas'));
+        }
+
+        // If the user is not authorized
+        abort(403, 'Unauthorized action.');
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $jurusans = Jurusan::all();
-        return view("{$this->viewPrefix}.mahasiswa.create", compact('jurusans'));
+        $user = Auth::user();
+
+        if (in_array($user->role, ['admin', 'operator'])) {
+            // Ambil data jurusan dari database
+            $jurusans = Jurusan::all();
+
+            // Pilih view berdasarkan role pengguna
+            $viewPath = $user->role === 'operator' 
+                ? 'operator.mahasiswa.create' 
+                : 'admin.mahasiswa.create';
+
+            return view($viewPath, compact('jurusans'));
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'nim' => 'required',
-            'nama' => 'required',
-            'email' => 'required|email',
-            'jurusan_id' => 'required|exists:jurusans,id',
-            'no_hp' => 'required',
-        ]);
+        $user = Auth::user();
 
-        $mahasiswa = new Mahasiswa();
-        $mahasiswa->nim = $request->nim;
-        $mahasiswa->nama = $request->nama;
-        $mahasiswa->email = $request->email;
-        $mahasiswa->jurusan_id = $request->jurusan_id;
-        $mahasiswa->no_hp = $request->no_hp;
-        $mahasiswa->save();
+        if (in_array($user->role, ['admin', 'operator'])) {
+            // Validation
+            $request->validate([
+                'nim' => 'required|unique:mahasiswas,nim',
+                'nama' => 'required|string|max:255',
+                'email' => 'required|email|unique:mahasiswas,email',
+                'jurusan_id' => 'required|exists:jurusans,id',
+                'no_hp' => 'required|string|max:15',
+            ]);
 
-        return redirect()->route("{$this->viewPrefix}.mahasiswa.index")->with('success', 'Mahasiswa berhasil ditambahkan');
+            // Store the data
+            Mahasiswa::create($request->all());
+
+            return redirect()->route($user->role . '.mahasiswa.index')->with('success', 'Data berhasil ditambahkan.');
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show(string $id)
     {
-        $mahasiswa = Mahasiswa::findOrFail($id);
-        return view("{$this->viewPrefix}.mahasiswa.show", compact('mahasiswa'));
+        $user = Auth::user();
+
+        if (in_array($user->role, ['admin', 'operator'])) {
+            // Fetch specific mahasiswa data
+            $mahasiswa = Mahasiswa::findOrFail($id);
+
+            // Use a different view based on the user's role
+            $viewPath = $user->role === 'operator' 
+                ? 'operator.mahasiswa.show' 
+                : 'admin.mahasiswa.show';
+
+            return view($viewPath, compact('mahasiswa'));
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
-    public function edit($id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        $mahasiswa = Mahasiswa::findOrFail($id);
-        $jurusans = Jurusan::all();
+        $user = Auth::user();
 
-        return view("{$this->viewPrefix}.mahasiswa.edit", compact('mahasiswa', 'jurusans'));
+        if (in_array($user->role, ['admin', 'operator'])) {
+            // Ambil data mahasiswa berdasarkan ID
+            $mahasiswa = Mahasiswa::findOrFail($id);
+
+            // Ambil semua data jurusan dari database
+            $jurusans = Jurusan::all();
+
+            // Pilih view berdasarkan role pengguna
+            $viewPath = $user->role === 'operator' 
+                ? 'operator.mahasiswa.edit' 
+                : 'admin.mahasiswa.edit';
+
+            return view($viewPath, compact('mahasiswa', 'jurusans'));
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $validatedData = $request->validate([
-            'nim' => 'required|string|max:20',
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:mahasiswas,email,' . $id,
-            'jurusan_id' => 'required|exists:jurusans,id',
-            'no_hp' => 'required|string|max:15',
-        ]);
+        $user = Auth::user();
 
-        $mahasiswa = Mahasiswa::findOrFail($id);
-        $mahasiswa->update($validatedData);
+        if (in_array($user->role, ['admin', 'operator'])) {
+            // Validation
+            $request->validate([
+                'nim' => 'required|unique:mahasiswas,nim,' . $id,
+                'nama' => 'required|string|max:255',
+                'email' => 'required|email|unique:mahasiswas,email,' . $id,
+                'jurusan_id' => 'required|exists:jurusans,id',
+                'no_hp' => 'required|string|max:15',
+            ]);
 
-        return redirect()->route("{$this->viewPrefix}.mahasiswa.index")->with('success', 'Data mahasiswa berhasil diperbarui.');
+            // Update the data
+            $mahasiswa = Mahasiswa::findOrFail($id);
+            $mahasiswa->update($request->all());
+
+            return redirect()->route($user->role . '.mahasiswa.index')->with('success', 'Data berhasil diperbarui.');
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
-        $mahasiswa = Mahasiswa::findOrFail($id);
-        $mahasiswa->delete();
+        $user = Auth::user();
 
-        return redirect()->route("{$this->viewPrefix}.mahasiswa.index")->with('success', 'Data berhasil dihapus');
+        if (in_array($user->role, ['admin', 'operator'])) {
+            // Fetch and delete specific mahasiswa data
+            $mahasiswa = Mahasiswa::findOrFail($id);
+            $mahasiswa->delete();
+
+            return redirect()->route($user->role . '.mahasiswa.index')->with('success', 'Data berhasil dihapus.');
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 }

@@ -46,5 +46,23 @@ class UserSeeder extends Seeder
                 'role' => 'admin', // Role tetap sebagai operator
             ]
         );
+
+        User::updateOrCreate(
+            ['email' => 'denii@gmail.com'], // Kondisi pencarian berdasarkan email
+            [
+                'name' => 'Deni',
+                'password' => bcrypt('password'),
+                'role' => 'admin', // Role tetap sebagai operator
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'denaa@gmail.com'], // Kondisi pencarian berdasarkan email
+            [
+                'name' => 'Denaa',
+                'password' => bcrypt('password'),
+                'role' => 'admin', // Role tetap sebagai operator
+            ]
+        );
     }
 }

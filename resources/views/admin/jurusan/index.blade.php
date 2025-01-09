@@ -10,6 +10,13 @@
                 <a href="{{ route('admin.mahasiswa.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-user-graduate"></i> Data Mahasiswa</a>
                 <a href="{{ route('admin.jurusan.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-building"></i> Data Jurusan</a>
                 <a href="{{ route('admin.tuakir.index') }}" class="list-group-item list-group-item-action bg-light"><i class="fas fa-file-alt"></i> Data Tugas Akhir</a>
+
+                <form action="{{ route('logout') }}" method="POST" class="list-group-item list-group-item-action bg-light">
+                    @csrf
+                    <button type="submit" class="btn btn-link text-decoration-none p-0">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
             </div>
         </aside>
         <!-- main content -->
@@ -36,15 +43,15 @@
                                         $no = ($jurusans->currentPage() - 1) * $jurusans->perPage() + 1; // Use $jurusans
                                     @endphp
                                     @if($jurusans->count())
-                                        @foreach($jurusans as $j) 
+                                        @foreach($jurusans as $j)
                                         <tr>
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $j->nama }}</td> 
+                                            <td>{{ $j->nama }}</td>
                                             <td>
                                                 <a href="{{ route('admin.jurusan.show', $j->id) }}" class="btn btn-info btn-sm" title="Detail">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('jurusan.edit', $j->id) }}" class="btn btn-warning btn-sm">
+                                                <a href="{{ route('admin.jurusan.edit', $j->id) }}" class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <form action="{{ route('admin.jurusan.destroy', $j->id) }}" method="POST" style="display:inline;">
